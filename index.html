@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script src="https://unpkg.com/pixi.js@v5.0.4/dist/pixi.min.js"></script>
+    <script src="https://unpkg.com/three@0.108.0/build/three.js"></script>
+
+    <script>
+        javascript: (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
+    </script>
+</head>
+
+<body>
+    <canvas id="app"></canvas>
+
+    <script src="main.js"></script>
+
+</body>
+
+</html>

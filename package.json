@@ -1,0 +1,26 @@
+{
+  "name": "threejs-in-pixi",
+  "version": "0.1",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patwari/threejs-within-pixijs.git"
+  },
+  "keywords": [
+    "pixi",
+    "pixijs",
+    "threejs"
+  ],
+  "author": "Rahul Patwari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patwari/threejs-within-pixijs/issues"
+  },
+  "homepage": "https://github.com/patwari/threejs-within-pixijs#readme"
+}
