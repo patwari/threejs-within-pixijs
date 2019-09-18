@@ -55,6 +55,9 @@ function initThreeApp(canvas) {
 
     camera.position.set(0, 0, 3);
 
+    /**
+     * Return threejs elements for controls.
+     */
     return {
         renderer,
         camera,
