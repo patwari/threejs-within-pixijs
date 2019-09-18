@@ -22,4 +22,5 @@ http-server
 Monoloco
 
 ## Changelog
-1. Run two instances of threejs within pixi.
+1. Run three instances of threejs within pixi.
+2. Add control to show/hide the threejs apps.

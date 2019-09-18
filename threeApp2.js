@@ -1,3 +1,10 @@
+/**
+ * This threejs app creates a lot of cubes floating around in the space.
+ * The cubes highlight on mouse over.
+ * 
+ * @param {*} canvas 
+ */
+
 function initThreeApp2(canvas) {
     // var container;
     var camera, scene, raycaster, renderer;
