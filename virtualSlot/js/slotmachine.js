@@ -10,17 +10,6 @@ function virtualSlotMachine(canvas) {
     total_reels: 5
   };
 
-  function initStats() {
-    var stats = new Stats();
-    stats.setMode(0); // 0: fps, 1: ms
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.left = '0px';
-    stats.domElement.style.top = '0px';
-    // document.body.appendChild(stats.domElement);
-    return stats;
-  }
-
-  var stats = initStats();
 
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -135,7 +124,7 @@ function virtualSlotMachine(canvas) {
   });
   startButtonMaterial.map = startButtonTexture;
 
-  //Position and the buton to the scene
+  //Position and add the buton to the scene
   var startButton = new THREE.Mesh(startButtonGeometery, startButtonMaterial);
   startButton.position.z = 15;
   startButton.position.y = -14;
@@ -297,7 +286,6 @@ function virtualSlotMachine(canvas) {
     coinsDone = 0;
 
   function renderScene() {
-    stats.update();
     var delta = clock.getDelta();
     orbitControls.update(delta);
 
