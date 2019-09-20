@@ -25,6 +25,23 @@ const threeSprite4 = new PIXI.Sprite(threeTexture4);
 pixiApp.stage.addChildAt(threeSprite4, 3);
 
 /** ======================================================= */
+/**
+ * Blink "PARABELLUM" text twice to
+ */
+function onSpinComplete() {
+    if (!(playButton && playButton.visible)) { return; }
+
+    var count = 0;
+    var timer = setInterval(() => {
+        playButton.visible = !playButton.visible;
+        count++;
+        if (count >= 4) {
+            clearInterval(timer);
+            playButton.visible = true;
+        }
+    }, 100);
+
+}
 
 // threeApp4.draw();
 
@@ -72,3 +89,4 @@ requestAnimationFrame(update);
 // add event
 playButton.on('pointerup', threeApp4.playBtnUp);
 playButton.on('pointerdown', threeApp4.playBtnDown);
+document.addEventListener("SPIN_COMPLETE", onSpinComplete);

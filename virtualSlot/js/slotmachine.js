@@ -5,15 +5,18 @@ function virtualSlotMachine(canvas) {
     gameState = 0,
     totalGames = 0,
     winnings = 0;
+  var rotateCameraDiff = 0;
 
   var CONSTANTS = {
     total_reels: 5,
     speedFactor: 5,
     stopDelay: 0,
     baseWinAmt: 5,
-    FORCED_MIN_RTP: 0.5
+    FORCED_MIN_RTP: 0.5,
+    spread_out_reels: false,
+    rotate_reelpanel: true,
+    rotate_final_cam_x: 50
   };
-
 
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -312,6 +315,12 @@ function virtualSlotMachine(canvas) {
             wheels[ix].XXspinUntil = (clock.getElapsedTime() + (ix * 2)) + CONSTANTS.stopDelay; //xx seconds per wheel
             wheels[ix].XXstopSegment = rng.getNumber(ix);
           }
+
+          let rotateTimeRemaining = wheels[CONSTANTS.total_reels - 1].XXspinUntil;
+          let rotateInitCamX = camera.position.x;
+          rotateCameraDiff = (CONSTANTS.rotate_final_cam_x - rotateInitCamX) / rotateTimeRemaining;
+          rotateCameraDiff /= 16.67;
+
           gameState = 2;
           totalGames += 1;
           document.getElementById('gamesPlayed').innerHTML = "Credits Played: " + totalGames;
@@ -323,7 +332,7 @@ function virtualSlotMachine(canvas) {
               //This wheel has stoped spinning. Align wheel
               wheels[ix].rotation.x = (wheels[ix].XXsegment * WHEEL_SEGMENT) - 0.20;
               if (ix === CONSTANTS.total_reels - 1) {
-                //Third wheel stopped? Then spinning done, time to see if we've won!
+                //final wheel stopped? Then spinning done, time to see if we've won!
                 gameState = 3;
               }
             } else {
@@ -396,15 +405,39 @@ function virtualSlotMachine(canvas) {
             gameState = 0;
             console.log("coinDone: " + coinsDone);
             console.log("amtwon: " + amtwon);
+            document.dispatchEvent(new CustomEvent("SPIN_COMPLETE"));
           }
           break;
       } //end switch gameState
+
+      (CONSTANTS.spread_out_reels) && spreadOutReels(gameState);
+      (CONSTANTS.rotate_reelpanel) && rotateReelpanel(gameState);
+
     } //end Model valid (i.e. loaded)
 
     rng.generate(); //Constantly generate a random stop postition for each wheel.
 
     // window.requestAnimationFrame(renderScene);
     renderer.render(scene, camera);
+  }
+
+  function spreadOutReels(currState) {
+    if (currState === undefined) { currState = gameState; }
+    // spread out the reels only when spinning
+    if (currState !== 2) { return; }
+
+    // TODO
+
+  }
+
+  function rotateReelpanel(currState) {
+    if (currState === undefined) { currState = gameState; }
+    // rotate the reelpanel only when spinning
+    if (currState === 2) {
+      if (camera.position.x < CONSTANTS.rotate_final_cam_x) {
+        camera.position.x += rotateCameraDiff;
+      }
+    }
   }
 
   // renderScene();
