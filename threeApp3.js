@@ -52,10 +52,15 @@ function initThreeApp3(canvas) {
 
     var step = 0;
     function draw() {
+        requestAnimationFrame(draw);
+
+        if (!guiSettings.layer_ring) {
+            return;
+        }
+
         torus.rotation.y = step += 0.01;
 
         // render using requestAnimationFrame
-        requestAnimationFrame(draw);
         renderer.render(scene, camera);
     }
 

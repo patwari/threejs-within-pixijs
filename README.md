@@ -11,6 +11,7 @@ This is a demo of rendering threejs elements inside PIXI.
 ## Dev-Notes
 1. Currently we have two threejs apps running, one is updated via pixi, while the other gets updated by threejs ticker.
 1. disable antialising for better performance. 
+1. The hitarea of the slot is little disturbed in the threejs app. The correct place is approx 1cm in front of the button. Try clicking nearby that place. :-P
 
 ## How to Run
 Simply host the project and open in browser.

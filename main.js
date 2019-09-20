@@ -1,8 +1,8 @@
 /** default visibility of threejs apps. */
-let guiSettings = {
-    layer01: true,
-    layer02: false,
-    layer03: true
+var guiSettings = {
+    layer_cube: false,
+    layer_all_cubes: false,
+    layer_ring: true
 };
 
 const pixelRatio = window.devicePixelRatio // 2 in case of retinas
@@ -13,9 +13,8 @@ const offscreenCanvas = document.createElement('canvas');
 const offscreenCanvas2 = document.createElement('canvas');
 const offscreenCanvas3 = document.createElement('canvas');
 
-
 // init pixi.js
-const pixiApp = initPixiApp(canvas)
+const pixiApp = initPixiApp(canvas);
 
 // init three.js offscreen
 const threeApp = initThreeApp(offscreenCanvas);
@@ -23,16 +22,15 @@ const threeApp2 = initThreeApp2(offscreenCanvas2);
 const threeApp3 = initThreeApp3(offscreenCanvas3);
 
 /** background - PIXI */
-const texture = PIXI.Texture.from('https://picsum.photos/200/300');
-const bunny = new PIXI.Sprite(texture);
-bunny.x = 100;
-bunny.y = 200;
-pixiApp.stage.addChild(bunny);
+const bgTexture = PIXI.Texture.from("https://picsum.photos/" + innerWidth + "/" + innerHeight);
+const bgImage = new PIXI.Sprite(bgTexture);
+bgImage.tint = 0xffccff;
+pixiApp.stage.addChild(bgImage);
 
-const basicText = new PIXI.Text('Basic text in pixi');
-basicText.x = 500;
-basicText.y = 250;
-pixiApp.stage.addChild(basicText);
+// const basicText = new PIXI.Text('Basic text in pixi');
+// basicText.x = 500;
+// basicText.y = 250;
+// pixiApp.stage.addChild(basicText);
 
 /** ======================================================= */
 
@@ -68,77 +66,103 @@ pixiApp.stage.addChild(threeSprite3);
 /** ======================================================= */
 
 /** foreground PIXI */
-const basicText2 = new PIXI.Text('Basic text in pixi');
-basicText2.x = 500;
-basicText2.y = 300;
+const basicText2 = new PIXI.Text('PARABELLUM', {
+    dropShadow: true,
+    dropShadowAlpha: 0.6,
+    dropShadowAngle: 0.6,
+    dropShadowBlur: 2,
+    dropShadowColor: "#400040",
+    dropShadowDistance: 9,
+    fill: "white",
+    fontFamily: "Georgia",
+    fontSize: 60,
+    fontStyle: "italic",
+    fontWeight: "bolder",
+    letterSpacing: 7,
+    miterLimit: 3,
+    stroke: "blue",
+    strokeThickness: 10,
+    align: "center"
+});
+
+basicText2.position.set(500, 120);
+basicText2.anchor.set(0.5, 0);
 pixiApp.stage.addChild(basicText2);
 
 /** foreground image */
-const bunny2 = new PIXI.Sprite(PIXI.Texture.from('https://picsum.photos/200/310'));
-bunny2.x = 400;
-bunny2.y = 400;
-pixiApp.stage.addChild(bunny2);
+const playButton = createButton();
+playButton.anchor.set(0.5, 1.2);
+pixiApp.stage.addChild(playButton);
 
 /** dat.gui */
 var gui = new dat.GUI();
 var visibleFolder = gui.addFolder("Threejs apps visiblility", true);
 
-visibleFolder.add(guiSettings, 'layer01').onChange(guiChangeHandler);
-visibleFolder.add(guiSettings, 'layer02').onChange(guiChangeHandler);
-visibleFolder.add(guiSettings, 'layer03').onChange(guiChangeHandler);
+visibleFolder.add(guiSettings, 'layer_cube').onChange(guiChangeHandler);
+visibleFolder.add(guiSettings, 'layer_all_cubes').onChange(guiChangeHandler);
+visibleFolder.add(guiSettings, 'layer_ring').onChange(guiChangeHandler);
 
 /**
  * show/hide threejs apps based on the selection.
  */
 function guiChangeHandler() {
-    threeSprite.visible = guiSettings.layer01;
-    threeSprite2.visible = guiSettings.layer02;
-    threeSprite3.visible = guiSettings.layer03;
+    threeSprite.visible = guiSettings.layer_cube;
+    threeSprite2.visible = guiSettings.layer_all_cubes;
+    threeSprite3.visible = guiSettings.layer_ring;
 }
 
 /** force manually change it once. */
 guiChangeHandler();
 
 /** the main update cycle. Prefer PIXI.Ticker */
-function update(time) {
-    const t = time * 0.001
+// function update(time) {
+//     const t = time * 0.001
 
-    // THREE JS
-    threeApp.renderer.state.reset();
-    // threeApp2.renderer.state.reset();
+//     // THREE JS
+//     threeApp.renderer.state.reset();
+//     // threeApp2.renderer.state.reset();
 
-    // make the cubes rotate
-    threeApp.scene.traverse(child => {
-        if (child.isMesh) {
-            child.rotation.x = t * 0.1
-            child.rotation.y = t * 0.3
-        }
-    })
+//     // make the cubes rotate
+//     threeApp.scene.traverse(child => {
+//         if (child.isMesh) {
+//             child.rotation.x = t * 0.1
+//             child.rotation.y = t * 0.3
+//         }
+//     })
 
-    threeApp.draw();
-    // threeApp2.draw();
+//     threeApp.draw();
+//     // threeApp2.draw();
 
-    threeApp.renderer.state.reset()
-    // threeApp2.renderer.state.reset()
+//     threeApp.renderer.state.reset()
+//     // threeApp2.renderer.state.reset()
 
 
-    // PIXI
-    pixiApp.renderer.reset();
+//     // PIXI
+//     pixiApp.renderer.reset();
 
-    // tell pixi that threejs has changed
-    threeSprite.texture.update();
-    threeSprite2.texture.update();
-    threeSprite3.texture.update();
+//     // tell pixi that threejs has changed
+//     threeSprite.texture.update();
+//     threeSprite2.texture.update();
+//     threeSprite3.texture.update();
 
-    pixiApp.render()
+//     pixiApp.render()
 
-    // pixiApp.renderer.reset()
-    requestAnimationFrame(update)
-}
+//     // pixiApp.renderer.reset()
+//     requestAnimationFrame(update)
+// }
 
 /** begin the update loop. */
-requestAnimationFrame(update)
+// requestAnimationFrame(update)
 
+
+/** ====================================================================================== */
+window.addEventListener('resize', resize);
+function resize() {
+    basicText1 && (basicText1.x = innerWidth / 2);
+    basicText2.x = innerWidth / 2;
+    playButton.position.set(innerWidth / 2, innerHeight);
+};
+resize();
 
 /** ====================================================================================== */
 
@@ -146,7 +170,7 @@ function initPixiApp(canvas) {
     return new PIXI.Application({
         view: canvas,
         resizeTo: window,
-        antialias: true,
+        antialias: false,
         transparent: true,
         autoDensity: true,
         resolution: window.devicePixelRatio, // 2 in case of retinas
