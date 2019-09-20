@@ -1,8 +1,8 @@
 /** default visibility of threejs apps. */
 var guiSettings = {
-    layer01: false,
-    layer02: false,
-    layer03: true
+    layer_cube: false,
+    layer_all_cubes: false,
+    layer_ring: true
 };
 
 const pixelRatio = window.devicePixelRatio // 2 in case of retinas
@@ -13,7 +13,6 @@ const offscreenCanvas = document.createElement('canvas');
 const offscreenCanvas2 = document.createElement('canvas');
 const offscreenCanvas3 = document.createElement('canvas');
 
-
 // init pixi.js
 const pixiApp = initPixiApp(canvas);
 
@@ -23,9 +22,10 @@ const threeApp2 = initThreeApp2(offscreenCanvas2);
 const threeApp3 = initThreeApp3(offscreenCanvas3);
 
 /** background - PIXI */
-const texture = PIXI.Texture.from("https://picsum.photos/" + innerWidth + "/" + innerHeight);
-const bunny = new PIXI.Sprite(texture);
-pixiApp.stage.addChild(bunny);
+const bgTexture = PIXI.Texture.from("https://picsum.photos/" + innerWidth + "/" + innerHeight);
+const bgImage = new PIXI.Sprite(bgTexture);
+bgImage.tint = 0xffccff;
+pixiApp.stage.addChild(bgImage);
 
 // const basicText = new PIXI.Text('Basic text in pixi');
 // basicText.x = 500;
@@ -90,26 +90,25 @@ basicText2.anchor.set(0.5, 0);
 pixiApp.stage.addChild(basicText2);
 
 /** foreground image */
-const bunny2 = new PIXI.Sprite(PIXI.Texture.from('https://picsum.photos/200/310'));
-bunny2.x = 400;
-bunny2.y = 400;
-pixiApp.stage.addChild(bunny2);
+const playButton = createButton();
+playButton.anchor.set(0.5, 1.2);
+pixiApp.stage.addChild(playButton);
 
 /** dat.gui */
 var gui = new dat.GUI();
 var visibleFolder = gui.addFolder("Threejs apps visiblility", true);
 
-visibleFolder.add(guiSettings, 'layer01').onChange(guiChangeHandler);
-visibleFolder.add(guiSettings, 'layer02').onChange(guiChangeHandler);
-visibleFolder.add(guiSettings, 'layer03').onChange(guiChangeHandler);
+visibleFolder.add(guiSettings, 'layer_cube').onChange(guiChangeHandler);
+visibleFolder.add(guiSettings, 'layer_all_cubes').onChange(guiChangeHandler);
+visibleFolder.add(guiSettings, 'layer_ring').onChange(guiChangeHandler);
 
 /**
  * show/hide threejs apps based on the selection.
  */
 function guiChangeHandler() {
-    threeSprite.visible = guiSettings.layer01;
-    threeSprite2.visible = guiSettings.layer02;
-    threeSprite3.visible = guiSettings.layer03;
+    threeSprite.visible = guiSettings.layer_cube;
+    threeSprite2.visible = guiSettings.layer_all_cubes;
+    threeSprite3.visible = guiSettings.layer_ring;
 }
 
 /** force manually change it once. */
@@ -155,6 +154,15 @@ guiChangeHandler();
 /** begin the update loop. */
 // requestAnimationFrame(update)
 
+
+/** ====================================================================================== */
+window.addEventListener('resize', resize);
+function resize() {
+    basicText1 && (basicText1.x = innerWidth / 2);
+    basicText2.x = innerWidth / 2;
+    playButton.position.set(innerWidth / 2, innerHeight);
+};
+resize();
 
 /** ====================================================================================== */
 

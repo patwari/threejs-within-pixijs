@@ -176,7 +176,6 @@ function virtualSlotMachine(canvas) {
     }
   }, false);
 
-
   //Mouse hander - Click the big yellow button to spin.
   function onDocumentMouseDown(event) {
     var vector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5);
@@ -194,11 +193,23 @@ function virtualSlotMachine(canvas) {
   }
   document.addEventListener('mousedown', onDocumentMouseDown, false);
 
-
   function onDocumentMouseUp() {
     startButton.position.y = -14;
   }
   document.addEventListener('mouseup', onDocumentMouseUp, false);
+
+  function playBtnDown() {
+    //Button Clicked, so push button down.
+    startButton.position.y = -15;
+    //Spin wheels if not already spinning.
+    if (gameState === 0) {
+      gameState = 1;
+    }
+  }
+
+  function playBtnUp() {
+    startButton.position.y = -14;
+  }
 
 
   function Rng() {
@@ -401,7 +412,9 @@ function virtualSlotMachine(canvas) {
     camera,
     scene,
     resize: onResize,
-    draw: renderScene
+    draw: renderScene,
+    playBtnUp,
+    playBtnDown
   };
 
   return window.slot;

@@ -1,10 +1,10 @@
-guiSettings.layer04 = true;
+guiSettings.layer_slot = true;
 
-visibleFolder.add(guiSettings, 'layer04').onChange(guiChangeHandler2);
+visibleFolder.add(guiSettings, 'layer_slot').onChange(guiChangeHandler2);
 // var oldGuiChangeHandler = guiChangeHandler;
 
 function guiChangeHandler2() {
-    threeSprite4.visible = guiSettings.layer04;
+    threeSprite4.visible = guiSettings.layer_slot;
 }
 
 const offscreenCanvas4 = document.createElement('canvas');
@@ -19,7 +19,7 @@ const threeSprite4 = new PIXI.Sprite(threeTexture4);
 // threeSprite4.scale.x /= pixelRatio;
 // threeSprite4.scale.y /= pixelRatio;
 // threeSprite4.position.set(0, 0);
-pixiApp.stage.addChildAt(threeSprite4, 4);
+pixiApp.stage.addChildAt(threeSprite4, 3);
 
 /** ======================================================= */
 
@@ -33,16 +33,16 @@ function update(time) {
     // threeApp2.renderer.state.reset();
 
     // make the cubes rotate
-    guiSettings.layer01 && threeApp.scene.traverse(child => {
+    guiSettings.layer_cube && threeApp.scene.traverse(child => {
         if (child.isMesh) {
             child.rotation.x = t * 0.1
             child.rotation.y = t * 0.3
         }
     });
 
-    guiSettings.layer01 && threeApp.draw();
-    // guiSettings.layer03 && threeApp3.draw();
-    guiSettings.layer04 && threeApp4.draw();
+    guiSettings.layer_cube && threeApp.draw();
+    // guiSettings.layer_ring && threeApp3.draw();
+    guiSettings.layer_slot && threeApp4.draw();
     // threeApp2.draw();
 
     threeApp.renderer.state.reset()
@@ -53,10 +53,10 @@ function update(time) {
     pixiApp.renderer.reset();
 
     // tell pixi that threejs has changed
-    guiSettings.layer01 && threeSprite.texture.update();
-    guiSettings.layer02 && threeSprite2.texture.update();
-    guiSettings.layer03 && threeSprite3.texture.update();
-    guiSettings.layer04 && threeSprite4.texture.update();
+    guiSettings.layer_cube && threeSprite.texture.update();
+    guiSettings.layer_all_cubes && threeSprite2.texture.update();
+    guiSettings.layer_ring && threeSprite3.texture.update();
+    guiSettings.layer_slot && threeSprite4.texture.update();
 
     pixiApp.render()
 
@@ -64,13 +64,8 @@ function update(time) {
     requestAnimationFrame(update)
 }
 
-window.addEventListener('resize', resize);
-
-function resize() {
-    basicText1 && (basicText1.x = innerWidth / 2);
-    basicText2.x = innerWidth / 2;
-}
-
-resize();
-
 requestAnimationFrame(update);
+
+// add event
+playButton.on('pointerup', threeApp4.playBtnUp);
+playButton.on('pointerdown', threeApp4.playBtnDown);

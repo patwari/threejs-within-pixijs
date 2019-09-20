@@ -64,7 +64,7 @@ function initThreeApp2(canvas) {
         render();
     }
     function render() {
-        if (!guiSettings.layer02) {
+        if (!guiSettings.layer_all_cubes) {
             return;
         }
 

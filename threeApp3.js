@@ -54,7 +54,7 @@ function initThreeApp3(canvas) {
     function draw() {
         requestAnimationFrame(draw);
 
-        if (!guiSettings.layer03) {
+        if (!guiSettings.layer_ring) {
             return;
         }
 
