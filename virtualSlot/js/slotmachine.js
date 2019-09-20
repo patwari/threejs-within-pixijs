@@ -7,7 +7,11 @@ function virtualSlotMachine(canvas) {
     winnings = 0;
 
   var CONSTANTS = {
-    total_reels: 5
+    total_reels: 5,
+    speedFactor: 5,
+    stopDelay: 0,
+    baseWinAmt: 5,
+    FORCED_MIN_RTP: 0.5
   };
 
 
@@ -211,7 +215,7 @@ function virtualSlotMachine(canvas) {
     Rng.prototype.generate = function () {
       //This function constantly generates random numbers for each wheel
       var ix = 0;
-      for (ix = 0; ix < 3; ix += 1) {
+      for (ix = 0; ix < CONSTANTS.total_reels; ix += 1) {
         wheelNumbers[ix] = Math.floor(Math.random() * 40);
       }
     };
@@ -249,14 +253,20 @@ function virtualSlotMachine(canvas) {
     //return 5; //FORCE A PAYOUT FOR TESTING - REMOVE THIS LINE!
     //Returns the amount player has won this rutn - 0 if player has not won.
     if (wheels[0].XXstopSegment === 6 && wheels[1].XXstopSegment === 6 && wheels[2].XXstopSegment === 6) {
-      return 5;
+      return CONSTANTS.baseWinAmt;
     }
     if (wheels[0].XXstopSegment === 3 && wheels[1].XXstopSegment === 3 && wheels[2].XXstopSegment === 3) {
-      return 10;
+      return CONSTANTS.baseWinAmt * 2;
     }
     if (wheels[0].XXstopSegment === 0 && wheels[1].XXstopSegment === 0 && wheels[2].XXstopSegment === 0) {
-      return 30;
+      return CONSTANTS.baseWinAmt * 3;
     }
+
+    let val = Math.random();
+    if (val <= CONSTANTS.FORCED_MIN_RTP) {
+      return Number((val * CONSTANTS.baseWinAmt).toFixed(2));
+    }
+
     return 0; //None of the above? then player has lost.
   }
 
@@ -299,7 +309,7 @@ function virtualSlotMachine(canvas) {
 
         case 1: //Capture RNG values for each wheel and set up the wheel spins.
           for (ix = 0; ix < CONSTANTS.total_reels; ix += 1) {
-            wheels[ix].XXspinUntil = (clock.getElapsedTime() + (ix * 2)) + 3; //xx seconds per wheel
+            wheels[ix].XXspinUntil = (clock.getElapsedTime() + (ix * 2)) + CONSTANTS.stopDelay; //xx seconds per wheel
             wheels[ix].XXstopSegment = rng.getNumber(ix);
           }
           gameState = 2;
@@ -312,13 +322,13 @@ function virtualSlotMachine(canvas) {
             if (wheels[ix].XXsegment === wheels[ix].XXstopSegment && wheels[ix].XXspinUntil < clock.getElapsedTime()) {
               //This wheel has stoped spinning. Align wheel
               wheels[ix].rotation.x = (wheels[ix].XXsegment * WHEEL_SEGMENT) - 0.20;
-              if (ix === 2) {
+              if (ix === CONSTANTS.total_reels - 1) {
                 //Third wheel stopped? Then spinning done, time to see if we've won!
                 gameState = 3;
               }
             } else {
               //Spin until wheel spinning time is exceeded and the wheel has landed on the chosen segment
-              wheels[ix].XXposition += 3 * delta;
+              wheels[ix].XXposition += CONSTANTS.speedFactor * delta;
               while (wheels[ix].XXposition > (Math.PI * 2)) {
                 wheels[ix].XXposition -= Math.PI * 2;
               }
@@ -329,7 +339,8 @@ function virtualSlotMachine(canvas) {
           break;
 
         case 3: //Spinning stopped
-          if (amountWon() !== 0) {
+          amtwon = amountWon();
+          if (amtwon !== 0) {
             //Player has won!!!
             gameState = 4;
           } else {
@@ -344,7 +355,6 @@ function virtualSlotMachine(canvas) {
           speed = [];
           coin = [];
           iy = 0;
-          amtwon = amountWon();
           coinRemoved = [];
           coinsDone = 0;
           //Position a coin
