@@ -15,7 +15,7 @@ const offscreenCanvas3 = document.createElement('canvas');
 
 
 // init pixi.js
-const pixiApp = initPixiApp(canvas)
+const pixiApp = initPixiApp(canvas);
 
 // init three.js offscreen
 const threeApp = initThreeApp(offscreenCanvas);
@@ -27,10 +27,10 @@ const texture = PIXI.Texture.from("https://picsum.photos/" + innerWidth + "/" + 
 const bunny = new PIXI.Sprite(texture);
 pixiApp.stage.addChild(bunny);
 
-const basicText = new PIXI.Text('Basic text in pixi');
-basicText.x = 500;
-basicText.y = 250;
-pixiApp.stage.addChild(basicText);
+// const basicText = new PIXI.Text('Basic text in pixi');
+// basicText.x = 500;
+// basicText.y = 250;
+// pixiApp.stage.addChild(basicText);
 
 /** ======================================================= */
 
@@ -66,9 +66,27 @@ pixiApp.stage.addChild(threeSprite3);
 /** ======================================================= */
 
 /** foreground PIXI */
-const basicText2 = new PIXI.Text('Basic text in pixi');
-basicText2.x = 500;
-basicText2.y = 300;
+const basicText2 = new PIXI.Text('PARABELLUM', {
+    dropShadow: true,
+    dropShadowAlpha: 0.6,
+    dropShadowAngle: 0.6,
+    dropShadowBlur: 2,
+    dropShadowColor: "#400040",
+    dropShadowDistance: 9,
+    fill: "white",
+    fontFamily: "Georgia",
+    fontSize: 60,
+    fontStyle: "italic",
+    fontWeight: "bolder",
+    letterSpacing: 7,
+    miterLimit: 3,
+    stroke: "blue",
+    strokeThickness: 10,
+    align: "center"
+});
+
+basicText2.position.set(500, 120);
+basicText2.anchor.set(0.5, 0);
 pixiApp.stage.addChild(basicText2);
 
 /** foreground image */

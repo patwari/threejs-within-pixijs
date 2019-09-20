@@ -64,4 +64,13 @@ function update(time) {
     requestAnimationFrame(update)
 }
 
+window.addEventListener('resize', resize);
+
+function resize() {
+    basicText1 && (basicText1.x = innerWidth / 2);
+    basicText2.x = innerWidth / 2;
+}
+
+resize();
+
 requestAnimationFrame(update);
