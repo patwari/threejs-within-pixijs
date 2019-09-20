@@ -1,3 +1,32 @@
 body{
-    background-color: tomato
+    background-color: tomato;
+    margin: 0;
+	font-family: Monospace;
+	margin: 0;
+	overflow: hidden;
+}
+
+.gamecard {
+	text-align: left;
+	top: 50px;
+	opacity: 0.8;
+	padding: 0;
+	z-index: 10;
+    width: 200px;
+    height: 170px;
+    position: absolute;
+    background-image: url("virtualSlot/images/gamecard.png");
+    background-repeat: no-repeat;
+}
+
+canvas {
+	width: 100%;
+	height: 100%
+}
+
+h2 {
+	background-color: #E8DFE0;
+	color: black;
+	font-size: 15px;
+	margin-top: 140px;
 }

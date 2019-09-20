@@ -1,6 +1,6 @@
 /** default visibility of threejs apps. */
-let guiSettings = {
-    layer01: true,
+var guiSettings = {
+    layer01: false,
     layer02: false,
     layer03: true
 };
@@ -23,10 +23,8 @@ const threeApp2 = initThreeApp2(offscreenCanvas2);
 const threeApp3 = initThreeApp3(offscreenCanvas3);
 
 /** background - PIXI */
-const texture = PIXI.Texture.from('https://picsum.photos/200/300');
+const texture = PIXI.Texture.from("https://picsum.photos/" + innerWidth + "/" + innerHeight);
 const bunny = new PIXI.Sprite(texture);
-bunny.x = 100;
-bunny.y = 200;
 pixiApp.stage.addChild(bunny);
 
 const basicText = new PIXI.Text('Basic text in pixi');
@@ -100,44 +98,44 @@ function guiChangeHandler() {
 guiChangeHandler();
 
 /** the main update cycle. Prefer PIXI.Ticker */
-function update(time) {
-    const t = time * 0.001
+// function update(time) {
+//     const t = time * 0.001
 
-    // THREE JS
-    threeApp.renderer.state.reset();
-    // threeApp2.renderer.state.reset();
+//     // THREE JS
+//     threeApp.renderer.state.reset();
+//     // threeApp2.renderer.state.reset();
 
-    // make the cubes rotate
-    threeApp.scene.traverse(child => {
-        if (child.isMesh) {
-            child.rotation.x = t * 0.1
-            child.rotation.y = t * 0.3
-        }
-    })
+//     // make the cubes rotate
+//     threeApp.scene.traverse(child => {
+//         if (child.isMesh) {
+//             child.rotation.x = t * 0.1
+//             child.rotation.y = t * 0.3
+//         }
+//     })
 
-    threeApp.draw();
-    // threeApp2.draw();
+//     threeApp.draw();
+//     // threeApp2.draw();
 
-    threeApp.renderer.state.reset()
-    // threeApp2.renderer.state.reset()
+//     threeApp.renderer.state.reset()
+//     // threeApp2.renderer.state.reset()
 
 
-    // PIXI
-    pixiApp.renderer.reset();
+//     // PIXI
+//     pixiApp.renderer.reset();
 
-    // tell pixi that threejs has changed
-    threeSprite.texture.update();
-    threeSprite2.texture.update();
-    threeSprite3.texture.update();
+//     // tell pixi that threejs has changed
+//     threeSprite.texture.update();
+//     threeSprite2.texture.update();
+//     threeSprite3.texture.update();
 
-    pixiApp.render()
+//     pixiApp.render()
 
-    // pixiApp.renderer.reset()
-    requestAnimationFrame(update)
-}
+//     // pixiApp.renderer.reset()
+//     requestAnimationFrame(update)
+// }
 
 /** begin the update loop. */
-requestAnimationFrame(update)
+// requestAnimationFrame(update)
 
 
 /** ====================================================================================== */
@@ -146,7 +144,7 @@ function initPixiApp(canvas) {
     return new PIXI.Application({
         view: canvas,
         resizeTo: window,
-        antialias: true,
+        antialias: false,
         transparent: true,
         autoDensity: true,
         resolution: window.devicePixelRatio, // 2 in case of retinas

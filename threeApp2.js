@@ -64,6 +64,10 @@ function initThreeApp2(canvas) {
         render();
     }
     function render() {
+        if (!guiSettings.layer02) {
+            return;
+        }
+
         theta += 0.1;
         camera.position.x = radius * Math.sin(THREE.Math.degToRad(theta));
         camera.position.y = radius * Math.sin(THREE.Math.degToRad(theta));
