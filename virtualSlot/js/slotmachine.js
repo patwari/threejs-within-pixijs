@@ -6,6 +6,10 @@ function virtualSlotMachine(canvas) {
     totalGames = 0,
     winnings = 0;
 
+  var CONSTANTS = {
+    total_reels: 5
+  };
+
   function initStats() {
     var stats = new Stats();
     stats.setMode(0); // 0: fps, 1: ms
@@ -82,12 +86,12 @@ function virtualSlotMachine(canvas) {
     // Function when resource is loaded
     function (geometry, materials) {
       var ix = 0;
-      for (ix = 0; ix < 3; ix += 1) {
+      for (ix = 0; ix < CONSTANTS.total_reels; ix += 1) {
         wheels[ix] = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
         wheels[ix].scale.x = 10;
         wheels[ix].scale.y = 10;
         wheels[ix].scale.z = 10;
-        wheels[ix].position.x = (ix * 10) - 10;
+        wheels[ix].position.x = (ix * 10) - ((CONSTANTS.total_reels - 1) * 10 / 2);
         wheels[ix].castShadow = true;
         scene.add(wheels[ix]);
         wheels[ix].XXsegment = 0; //Custom variable added to THREE object
@@ -100,7 +104,7 @@ function virtualSlotMachine(canvas) {
   );
 
   //Add the linebars
-  var linebarGeometery = new THREE.CylinderGeometry(0.5, 0.5, 30, 16);
+  var linebarGeometery = new THREE.CylinderGeometry(0.5, 0.5, CONSTANTS.total_reels * 10, 16);
   var linebarMaterial = new THREE.MeshLambertMaterial({
     color: 0x00ff00,
     ambient: 0x00ff00
@@ -306,7 +310,7 @@ function virtualSlotMachine(canvas) {
           break;
 
         case 1: //Capture RNG values for each wheel and set up the wheel spins.
-          for (ix = 0; ix < 3; ix += 1) {
+          for (ix = 0; ix < CONSTANTS.total_reels; ix += 1) {
             wheels[ix].XXspinUntil = (clock.getElapsedTime() + (ix * 2)) + 3; //xx seconds per wheel
             wheels[ix].XXstopSegment = rng.getNumber(ix);
           }
@@ -316,7 +320,7 @@ function virtualSlotMachine(canvas) {
           break;
 
         case 2: //Spin those wheels!
-          for (ix = 0; ix < 3; ix += 1) {
+          for (ix = 0; ix < CONSTANTS.total_reels; ix += 1) {
             if (wheels[ix].XXsegment === wheels[ix].XXstopSegment && wheels[ix].XXspinUntil < clock.getElapsedTime()) {
               //This wheel has stoped spinning. Align wheel
               wheels[ix].rotation.x = (wheels[ix].XXsegment * WHEEL_SEGMENT) - 0.20;
