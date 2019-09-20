@@ -416,7 +416,8 @@ function virtualSlotMachine(canvas) {
     resize: onResize,
     draw: renderScene,
     playBtnUp,
-    playBtnDown
+    playBtnDown,
+    slotGround: plane
   };
 
   return window.slot;

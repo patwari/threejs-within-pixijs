@@ -1,10 +1,13 @@
 guiSettings.layer_slot = true;
+guiSettings.layer_ground = true;
 
 visibleFolder.add(guiSettings, 'layer_slot').onChange(guiChangeHandler2);
+visibleFolder.add(guiSettings, 'layer_ground').onChange(guiChangeHandler2);
 // var oldGuiChangeHandler = guiChangeHandler;
 
 function guiChangeHandler2() {
     threeSprite4.visible = guiSettings.layer_slot;
+    threeApp4.slotGround.visible = guiSettings.layer_ground;
 }
 
 const offscreenCanvas4 = document.createElement('canvas');
